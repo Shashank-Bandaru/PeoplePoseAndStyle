@@ -1,0 +1,157 @@
+{% extends 'home.html' %} {% block content %}
+<style>
+  body {
+    display: flex;
+    justify-content: center;
+    align-items: left;
+    height: 100%;
+    margin: 0;
+    font-family: Arial, sans-serif;
+  }
+  .container {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+  }
+  .images {
+    display: flex;
+    justify-content: center;
+    gap: 80px; /* space between images */
+  }
+  .image_displayed {
+    width: auto;
+    height: 23vw;
+    margin-bottom: 20px;
+  }
+  .prediction_results {
+    margin-bottom: 20px;
+    font-size: 1.6em;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  }
+  .back-to-home {
+    display: inline-block;
+    margin-top: 20px;
+    width: 10%;
+    padding: 5px 10px;
+    background-color: hsl(211, 91%, 52%);
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+  }
+  .back-to-home:hover {
+    background-color: hsl(211, 89%, 29%);
+    color: white;
+    text-decoration: none;
+  }
+  .form-radio {
+    margin-left: 300px;
+    padding: 0px;
+  }
+  h2 {
+    margin-bottom: 10px;
+  }
+  .submission_btn{
+       background-color: hsl(120, 95%, 36%);
+       color: white;
+       width : 80px;
+       padding-left: 14px;
+       border-radius: 10px;
+  }
+  .submission_btn:hover{
+    background-color: hsla(120, 87%, 30%, 0.884);
+  }
+  #uploadSection {
+    display: none;
+    margin-top: 20px;
+    padding: 1px;
+  }
+  .results {
+    margin-top: 20px;
+  }
+</style>
+<div class="container">
+  <div class="row">
+    <div class="image col-6">
+      <h6 style="font-weight: bold;">Original Image</h6>
+      <img
+        src="{{ image_src }}"
+        alt="required_prediction_image"
+        class="image_displayed"
+        onclick="window.open(this.src)"
+      />
+    </div>
+    <div class="image col-6">
+      <h6 style="font-weight: bold;" >Removed Background Image</h6>
+      <img src="{{ rembg_image }}" alt="rembg_image" class="image_displayed" onclick="window.open(this.src)"/>
+    </div>
+    
+  </div>
+  <div class="row form-radio">
+    <form class="col offset-3"
+      method="POST"
+      action="{% url 'custombg' %}"
+      enctype="multipart/form-data"
+    >
+      <input type="hidden" name="image_url" value="{{ image_src }}" />
+      <input type="hidden" name="rembg_url" value="{{ rembg_image }}" />
+      <label class="row">
+        <input
+          type="radio"
+          name="action"
+          value="action1"
+          onclick="showUploadSection(false)"
+        />
+        &nbsp; Apply White Background
+      </label>
+      <label class="row">
+        <input
+          type="radio"
+          name="action"
+          value="action2"
+          onclick="showUploadSection(true)"
+        />
+        &nbsp;Apply Custom Background
+      </label>
+      {% csrf_token %}
+      <br />
+      <div id="uploadSection" class="col">
+        <label for="upload" class="row"
+          >Upload an image (JPEG, PNG only, max size 2MB):</label
+        >
+        <input
+          class="row"
+          type="file"
+          id="upload"
+          name="custom_img"
+          accept=".jpeg, .jpg, .png"
+        />
+      </div>
+      <button class="row align-self-center submission_btn" type="submit" name="option_submit">Submit</button>
+    </form>
+    <script>
+      function showUploadSection(show) {
+        const uploadSection = document.getElementById("uploadSection");
+        if (show) {
+          uploadSection.style.display = "block";
+        } else {
+          uploadSection.style.display = "none";
+        }
+      }
+    </script>
+    <div class="container results">
+      {% if processed_image %}
+      <div class="row ">
+        <h5 class="col-6 col-md-2 align-self-center" style="font-weight: bold;">Processed Image:</h5>
+        <img
+          src="{{ processed_image }}"
+          alt="Processed Image"
+          class="col-6 col-md-5 image_displayed"
+          onclick="window.open(this.src)"
+        />
+      </div>
+      {% endif %}
+    </div>
+  </div>
+  <a href="{% url 'upload' %}" class="col-sm-4 offset-5 back-to-home">Back to Home</a>
+</div>
+{% endblock %}

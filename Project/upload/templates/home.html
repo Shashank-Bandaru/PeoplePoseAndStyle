@@ -1,0 +1,309 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Home</title>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    />
+    <style>
+      body,
+      html {
+        margin: 0;
+        padding: 0;
+        
+        background-image: url("/static/images/home.jpeg");
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-size: 100% 100%;
+      }
+
+      .container {
+        max-width: 1600px;
+        
+      }
+
+      .user_card {
+        width: 100%;
+        min-height: 90%;
+        margin: 10px auto;
+        background: #e7edef79; /* Light background for contrast */
+        backdrop-filter: blur(10px);
+        padding: 20px;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2),
+          0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        border-radius: 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .user-section {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background-color: #8dbae3b1;
+        border-radius: 10px;
+        border-bottom: 2px solid black;
+        padding: 5px;
+        width: 100%;
+        margin-bottom: 10px;
+      }
+
+      .upload-section {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        width: 450px;
+        height: 180px;
+        background-color: #8dbae3b1;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2),
+          0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        margin-bottom: 20px;
+      }
+
+      .upload-form {
+        text-align: center;
+      }
+
+      .upload-btn {
+        background: #3498db !important;
+        color: white !important;
+      }
+
+      .upload-btn:hover {
+        background: #2980b9 !important;
+      }
+
+      .thumbnail {
+        width: 50px;
+        height: 50px;
+        object-fit: cover;
+        border-radius: 5px;
+      }
+
+      .file-input {
+        display: block;
+        margin: 0 auto 10px auto;
+      }
+
+      .file-list {
+        list-style: none;
+        padding-top: 10px;
+        overflow-y: auto;
+        max-height: 60vh;
+        width: 100%;
+        text-align: center;
+      }
+
+      .file-item {
+        margin-bottom: 10px;
+        cursor: pointer;
+        display: inline-block;
+        justify-content: center;
+        position: relative; /* Ensure the button is positioned relative to this container */
+      }
+
+      .file-name {
+        margin-top: 5px;
+        color: #2c3e50;
+      }
+
+      .view-btn {
+        width: 100%; /* Ensure button takes full width of file-item */
+        margin-top: 5px; /* Adjust margin as needed */
+      }
+
+      .modal-content {
+        background-color: transparent;
+        border: none;
+      }
+
+      .modal-body {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        background-color: transparent;
+        padding: 0;
+        position: relative;
+      }
+
+      .modal-body img,
+      .modal-body video {
+        border-radius: 5px;
+        max-height: 80vh;
+        max-width: 80vw;
+        transition: transform 0.2s; /* Smooth transition for zoom effect */
+      }
+
+      .btn-container {
+        position: absolute;
+        top: 50px;
+        left: 40%;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+      }
+
+      .file-item:hover .btn-container {
+        opacity: 1;
+      }
+
+      .btn-container button {
+        margin-right: 5px;
+      }
+
+      #messages {
+        background-color: #95a5a6;
+        color: #2c3e50;
+        padding: 10px;
+        margin-top: 10px;
+        border-radius: 10px;
+      }
+
+      .zoom-container {
+        position: relative;
+        display: inline-block;
+      }
+
+      .zoom-controls {
+        position: fixed;
+        top: 10px;
+        right: 10px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .zoom-controls i {
+        font-size: 24px;
+        margin: 5px;
+        cursor: pointer;
+        color: #fff;
+        background-color: rgba(0, 0, 0, 0.5);
+        border-radius: 50%;
+        padding: 10px;
+        transition: background-color 0.3s;
+      }
+
+      .zoom-controls i:hover {
+        background-color: rgba(0, 0, 0, 0.7);
+      }
+
+      .profile {
+        color: black;
+      }
+      .profile:hover {
+        color: black;
+        text-decoration: none;
+      }
+      .btn_btn_secondary_predict_btn {
+        margin-bottom: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div
+      class="container h-100 d-flex align-items-center justify-content-center"
+    >
+     <div class="user_card">
+        <div class="user-section">
+          <h1>
+            Welcome,
+            <a class="profile" href="{% url 'profile' %}"
+              >{{ user.username }}</a
+            >
+          </h1>
+          <form action="{% url 'logout' %}" method="post">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger">Logout</button>
+          </form>
+        </div>
+        
+        {% block content %}{% endblock %}
+        
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script>
+      let zoomLevel = 1;
+      let zoomImage = null;
+      let windowHeight = window.innerHeight;
+      let extraHeight = 0;
+      let imgHeight;
+
+      function openModal(url) {
+        const extension = url.split(".").pop().toLowerCase();
+        if (extension === "mp4") {
+          const videoTag =
+            '<video controls style="max-height: 90vh; max-width: 90vw;">' +
+            '<source src="' +
+            url +
+            '" type="video/mp4">' +
+            "Your browser does not support the video tag." +
+            "</video>";
+          $("#modalContent").html(videoTag);
+          $("#zoomControls").hide();
+        } else {
+          const imgTag =
+            '<img src="' +
+            url +
+            '" alt="Media" style="border-radius: 5px; max-height: 90vh; max-width: 100%;" id="zoomImage">';
+          $("#modalContent").html(imgTag);
+          $("#zoomControls").show();
+          zoomImage = document.getElementById("zoomImage");
+          zoomLevel = 1;
+          zoomImage.style.transform = `scale(${zoomLevel})`;
+          imgHeight = zoomImage.naturalHeight;
+        }
+        $("#mediaModal").modal("show");
+      }
+
+      function zoomIn() {
+        if (zoomLevel < 2.5) {
+          zoomLevel += 0.1;
+          zoomImage.style.transform = `scale(${zoomLevel})`;
+          adjustScroll1();
+        }
+      }
+
+      function zoomOut() {
+        if (zoomLevel > 0.75) {
+          zoomLevel -= 0.1;
+          zoomImage.style.transform = `scale(${zoomLevel})`;
+          adjustScroll2();
+        }
+      }
+
+      function adjustScroll1() {
+        if (zoomImage) {
+          const zoomedHeight = zoomLevel * imgHeight;
+          if (zoomedHeight > windowHeight) {
+            extraHeight = extraHeight + 14;
+            zoomImage.style.paddingTop = `${extraHeight}px`;
+          }
+        }
+      }
+
+      function adjustScroll2() {
+        extraHeight = extraHeight - 14;
+        zoomImage.style.paddingTop = `${extraHeight}px`;
+      }
+    </script>
+  </body>
+</html>

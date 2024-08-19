@@ -1,0 +1,89 @@
+{% extends 'home.html' %} {% block content %}
+<style>
+  body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    margin: 0;
+    font-family: Arial, sans-serif;
+  }
+  .container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  .image_displayed {
+    width: 20dvw;
+    height: auto;
+    margin-bottom: 20px;
+  }
+  .prediction_results {
+    margin-bottom: 20px;
+    font-size: 1.4em;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  }
+ 
+  .back-to-home {
+    display: inline-block;
+    padding: 5px 10px;
+    background-color:  hsl(210, 96%, 31%);
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+  }
+  .back-to-home:hover {
+    background-color: hsl(210, 69%, 49%);
+    color:white !important;
+    text-decoration: none;
+  }
+</style>
+<div class="container">
+  <div class="image">
+    <img
+      src="{{ image_src }}"
+      alt="required_prediction_image"
+      class="image_displayed"
+    />
+  </div>
+
+  <div class="prediction_results">
+    {% if prediction_results.0 != 2 %} {% if prediction_results.0 == 1 %}
+    <p>Predicted Class: No People</p>
+    <p class="small" style="font-size: 1.2rem;">
+      Note: This image contains no people or in case of only a single person
+      being present the person is not clearly distinguishable from the
+      background. Please upload a clear image of a single person to perform
+      posture detection.
+    </p>
+    {% else %}
+    <p>Predicted Class: Multiple People</p>
+    <p>
+      Note: This image contains multiple people or in case of only a single
+      person being present there are too many background objects in it. Please
+      upload a clear image of a single person to perform posture detection.
+    </p>
+    {% endif %} {% else %}
+    <p>Predicted Class: Single Person Image</p>
+    {% if prediction_results.1 == 0 %}
+    <p>Predicted Posture : Sitting</p>
+    {% elif prediction_results.1 == 1 %}
+    <p>Predicted Posture : Standing</p>
+    {% else %}
+    <p>This image cannot be classified into either sitting or standing</p>
+    {% endif %}
+    <p>
+      Note: In case of inaccurate result please try to provide a full body image
+      for obtaining correct prediction
+    </p>
+    {% endif %}
+  </div>
+  <form action="{% url 'rembg' %}" method="post">
+    {% csrf_token %}
+    <input type="hidden" name="image_url" value="{{ image_src }}" />
+    <button type="submit" class="btn btn-dark">Remove Background</button>
+  </form>
+  <a href="{% url 'upload' %}" class="mt-4 back-to-home">Back to Home</a>
+</div>
+{% endblock %}

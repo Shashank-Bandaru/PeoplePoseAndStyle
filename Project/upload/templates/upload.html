@@ -1,0 +1,110 @@
+{% extends 'home.html' %}
+{% block content%}
+<style>
+    .btn_btn_secondary_predict_btn {
+        display: inline-block;
+        padding: 5px 10px;
+        font-size: 16px;
+        font-weight: bold;
+        text-align: center;
+        text-decoration: none;
+        background-color: #4CAF50; 
+        color: white; 
+        border: 2px solid #4CAF50; 
+        border-radius: 8px; 
+        transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+        cursor: pointer;
+    }
+
+    .btn_btn_secondary_predict_btn:hover {
+        background-color: white; 
+        color: #4CAF50; 
+    }
+    
+</style>
+<div class="upload-section">
+    <div class="upload-form">
+      <h3>Upload Images/Videos</h3>
+      <form action="" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <input type="file" name="file" class="file-input" />
+        <button type="submit" class="btn upload-btn">Upload</button>
+      </form>
+      {% for message in messages %}
+      <p id="messages">{{ message }}</p>
+      {% endfor %}
+    </div>
+  </div>
+
+  <h2>Uploaded Files</h2>
+  <div class="row file-list">
+    {% if media_files %} {% for file in media_files %}
+    <div class="col-md-3 file-item">
+      {% if file.file.name|lower|slice:"-3:" == "mp4" %}
+      <video class="thumbnail" controls>
+        <source src="{{ file.file.url }}" type="video/mp4" />
+        Your browser does not support the video tag.
+      </video>
+      {% else %}
+      <form action="{% url 'predictt' %}" method="post">
+        {% csrf_token %}
+        <input
+          type="hidden"
+          name="image_url"
+          value="{{ file.file.url }}"
+        />
+        <button type="submit" class="btn_btn_secondary_predict_btn">
+          Predict
+        </button>
+      </form>
+      <img src="{{ file.file.url }}" alt="Image" class="thumbnail" />
+
+      {% endif %}
+      <div class="file-info">
+        <div class="btn-container">
+          <button
+            class="btn btn-primary view-btn"
+            onclick="openModal('{{ file.file.url }}')"
+          >
+            View
+          </button>
+        </div>
+        <p class="file-name">{{ file.file.name }}</p>
+      </div>
+    </div>
+
+    {% endfor %} {% else %}
+    <p class="text-black">No files uploaded yet.</p>
+    {% endif %}
+  </div>
+</div>
+</div>
+
+<div
+class="modal fade"
+id="mediaModal"
+tabindex="-1"
+role="dialog"
+aria-labelledby="mediaModalLabel"
+aria-hidden="true"
+>
+<div class="modal-dialog modal-dialog-centered" role="document">
+  <div class="modal-content">
+    <div class="modal-body">
+      <div class="zoom-container">
+        <div id="modalContent"></div>
+        <div
+          class="zoom-controls"
+          id="zoomControls"
+          style="display: none"
+        >
+          <i class="fas fa-search-plus" onclick="zoomIn()"></i>
+          <i class="fas fa-search-minus" onclick="zoomOut()"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+{% endblock %}

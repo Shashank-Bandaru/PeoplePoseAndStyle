@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body,
+        html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            background-image: url('/static/images/home.jpeg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        .container {
+            max-width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .user_card {
+            width: 90%;
+            max-width: 600px;
+            background: rgba(231, 237, 239, 0.7); 
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+            border-radius: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .user-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: rgba(141, 186, 227, 0.7);            
+            border-radius: 10px;
+            border-bottom: 2px solid black;
+            padding: 10px;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        .content-section {
+            display: flex;
+            align-items: center;
+            background-color: rgba(141, 186, 227, 0.7);   
+            padding: 15px;
+            border-radius: 10px;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        .account-img {
+            height: 100px;
+            width: auto;
+            margin-right: 20px;
+        }
+
+        .userinfo {
+            text-align: left;
+        }
+
+        .userinfo h2 {
+            margin: 0;
+            font-size: 1.5rem;
+        }
+
+        .userinfo p {
+            margin: 0;
+            font-size: 1rem;
+        }
+
+        .update_form {
+            width: 100%;
+            background-color: rgba(141, 186, 227, 0.7);   
+            padding: 15px;
+            border-radius: 10px;
+        }
+
+        .update_form fieldset {
+            border: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .update_form label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .update_form input[type="text"],
+        .update_form textarea,
+        .update_form input[type="email"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+
+        .update_form input::placeholder {
+            font-size: 1.2em; /* Adjust the placeholder size */
+        }
+
+        .update_form fieldset label{
+            font-size: 25px;
+            font-weight: 400;
+        }
+
+        .update_form fieldset .helptext{
+            font-size: small;
+            color: rgba(141, 186, 227, 0.7);
+        }
+
+        #messages {
+            background-color: #95a5a6; 
+            color: #2c3e50;
+            padding: 10px;
+            margin-top: 10px;
+            border-radius: 10px;
+        }
+
+        .btn.login_btn {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+        }
+
+        .profile{
+            border: none; 
+            cursor: pointer; 
+            outline: none !important; 
+            background-color: rgba(141, 186, 227, 0.7);   
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="user_card">
+            <div class="user-section">
+                <h1><button onclick="history.back()" class="profile">⬅️</button>
+                    Profile</h1>                
+                <form action="{% url 'logout' %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger">Logout</button>
+                </form>                   
+            </div>
+            {% load static %}
+            <div class="content-section">
+                <div class="userimg">
+                        <img class="rounded-circle account-img" src="{{ user.profile.image.url }}">
+                </div>
+                <div class="userinfo">
+                    <h2>Username: {{ user.username }}</h2>
+                    <p>Email ID: {{ user.email }}</p>
+                </div>
+            </div>
+            <div class="update_form">
+                <h3>Profile Info</h3>
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <fieldset>
+                        {{ u_form }}
+                        {{ p_form }}
+                    </fieldset>
+                    <div class="d-flex justify-content-center mt-3">
+                        <input class="btn login_btn" type="submit" value="Update">
+                    </div>
+                    {% for message in messages %}
+                        <p id="messages">{{ message }}</p>
+                    {% endfor %}
+                </form>
+            </div>
+        </div>
+    </div>    
+</body>
+</html>
