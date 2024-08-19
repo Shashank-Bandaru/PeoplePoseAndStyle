@@ -58,7 +58,7 @@ The following libraries need to be installed to run the code:
 6. Run the Django server using the command `python manage.py runserver`.
 7. Access the web application through your web browser by visiting `http://localhost:8000`.
 
-## Demo
+## Demonstration Videos : 
 1. The demo video for user account creation ,login and file upload :
    [Django_frontend_demo.mp4](https://drive.google.com/file/d/1uKc067e1OgBc7S6Wd7Dnio3QsImuSlMl/view?usp=sharing)
 2. The demo video for individual and pose prediction : [People_pose_predict.mp4](https://drive.google.com/file/d/1kF-2t5lmZ2v5n0QQMXSfEW54ccZAjxH2/view?usp=sharing)
