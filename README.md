@@ -59,7 +59,6 @@ The following libraries need to be installed to run the code:
 7. Access the web application through your web browser by visiting `http://localhost:8000`.
 
 ## Demonstration Videos : 
-1. The demo video for user account creation ,login and file upload :
+1. The demo video for user account creation ,login ,file upload, individual and pose prediction :
    [Django_frontend_demo.mp4](https://drive.google.com/file/d/1uKc067e1OgBc7S6Wd7Dnio3QsImuSlMl/view?usp=sharing)
-2. The demo video for individual and pose prediction : [People_pose_predict.mp4](https://drive.google.com/file/d/1kF-2t5lmZ2v5n0QQMXSfEW54ccZAjxH2/view?usp=sharing)
-3. The demo video for remove background and custom background functionalities : [Style_Background.mp4](https://drive.google.com/file/d/1cDZmQCdV9vuX6H9xbXZx_4bnD3bGXm9F/view?usp=sharing)
+2. The demo video for remove background and custom background functionalities : [Style_Background.mp4](https://drive.google.com/file/d/1cDZmQCdV9vuX6H9xbXZx_4bnD3bGXm9F/view?usp=sharing)
