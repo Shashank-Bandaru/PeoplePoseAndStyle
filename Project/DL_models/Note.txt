@@ -1,0 +1,1 @@
+Please download and place the models in this folder before running the django project.
